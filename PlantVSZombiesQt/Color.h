@@ -1,0 +1,32 @@
+#pragma once
+
+#define ANSI_BLACK   "\033[30m"
+#define ANSI_RED     "\033[31m"
+#define ANSI_GREEN   "\033[32m"
+#define ANSI_YELLOW  "\033[33m"
+#define ANSI_BLUE    "\033[34m"
+#define ANSI_MAGENTA "\033[35m"
+#define ANSI_CYAN    "\033[36m"
+#define ANSI_RESET   "\033[0m"
+
+#define ANSI_LIGHT_RED     "\033[1;31m"
+#define ANSI_LIGHT_GREEN   "\033[1;32m"
+#define ANSI_LIGHT_YELLOW  "\033[1;33m"
+#define ANSI_LIGHT_BLUE    "\033[1;34m"
+#define ANSI_LIGHT_MAGENTA "\033[1;35m"
+#define ANSI_LIGHT_CYAN    "\033[1;36m"
+
+#define ANSI_BLACK_BG	"\033[40m"
+#define ANSI_RED_BG     "\033[41m"
+#define ANSI_GREEN_BG   "\033[42m"
+#define ANSI_YELLOW_BG  "\033[43m"
+#define ANSI_BLUE_BG    "\033[44m"
+#define ANSI_MAGENTA_BG "\033[45m"
+#define ANSI_CYAN_BG    "\033[46m"
+
+#define ANSI_LIGHT_RED_BG     "\033[1;41m"
+#define ANSI_LIGHT_GREEN_BG   "\033[1;42m"
+#define ANSI_LIGHT_YELLOW_BG  "\033[1;43m"
+#define ANSI_LIGHT_BLUE_BG    "\033[1;44m"
+#define ANSI_LIGHT_MAGENTA_BG "\033[1;45m"
+#define ANSI_LIGHT_CYAN_BG    "\033[1;46m"
