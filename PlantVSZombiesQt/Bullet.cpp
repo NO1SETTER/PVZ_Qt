@@ -41,18 +41,12 @@ zombie* bullet::move()
 
 void PEA::explode(zombie* zb)
 {
-	assert(zb);
-	brec[x][y] = NULL;
-	zb->hurt(attack);
 }
 
 
 
 void ICEPEA::explode(zombie* zb)
 {
-	brec[x][y] = NULL;
-	zb->hurt(attack);
-	zb->decelerate(1,MODE_CHG);
 }
 
 

@@ -8,6 +8,11 @@ Shovel::Shovel()
     shovelBackPic = QPixmap(shovelBackPath);
 }
 
+int Shovel::type()const
+{
+    return KIND_SHOVEL;
+}
+
 QRectF Shovel::boundingRect() const
 {
     return QRect(360,0,100,60); //设置触发的区域
@@ -52,7 +57,7 @@ void Shovel::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     setCursor(Qt::ArrowCursor);
 }
 
-void Shovel::remove(const QPoint &pos)
+void Shovel::remove(const QPointF &pos)
 {
     QList<QGraphicsItem*> nowitems = scene()->items(pos);
     for(auto it=nowitems.begin();it!=nowitems.end();it++)

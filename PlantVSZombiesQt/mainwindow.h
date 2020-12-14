@@ -23,9 +23,11 @@ public:
     ~MainWindow();
 
 private slots:
+    void GenerateZombie();
 private:
     Ui::MainWindow *ui;
     QGraphicsScene* scene;
     QTimer* timer;
+
 };
 #endif // MAINWINDOW_H

@@ -30,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent)
     timer->setInterval(100);
     connect(timer,SIGNAL(timeout()),scene,SLOT(advance()));
     connect(timer,SIGNAL(timeout()),scene,SLOT(update()));
+    connect(timer,SIGNAL(timeout()),this,SLOT(GenerateZombie()));
     timer->start();
 
     ui->view->setScene(scene);
@@ -41,6 +42,18 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+void MainWindow::GenerateZombie()
+{
+if(rand()%100==0)
+{
+    int row = rand()%5;
+    zombie* newzombie = new ConeHeadZombie(grassX[9],grassY[row]);
+    scene->addItem(newzombie);
+    return;
+}
+}
+
 
 
 

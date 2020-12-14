@@ -1,5 +1,5 @@
 #include"Cards.h"
-
+/*
 QString cardPath[10]={
     "images/Card/Plants/sunFlower.png",
     "images/Card/Plants/Peashooter.png",
@@ -26,20 +26,7 @@ QString plantPath[10]={
    "images/Plants/PumpkinHead/PumpkinHead.gif",
 
 };
-
-QString plantName[10]={
-    "sunflower",
-    "peashooter",
-    "wallnut",
-    "snowpea",
-    "repeater",
-    "squash",
-    "tallnut",
-    "cherrybomb",
-    "garlic",
-    "pumpkinhead",
-};
-
+*/
 Card::Card()
 {
 
@@ -48,8 +35,10 @@ Card::Card()
 Card::Card(int _id)
 {
     id = _id;
-    cardPic = QPixmap(cardPath[id]);
-    plantPic = QPixmap(plantPath[id]);
+    QString cardPath = "images/Card/Plants/"+plantName[id]+".png";
+    QString plantPath = "images/Plants/"+plantName[id]+"/"+plantName[id]+".gif";
+    cardPic = QPixmap(cardPath);
+    plantPic = QPixmap(plantPath);
 }
 
 void Card::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)

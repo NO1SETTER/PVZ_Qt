@@ -15,8 +15,8 @@ public:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
-
-    void remove(const QPoint& pos);
+    int type()const override;
+    void remove(const QPointF& pos);
 };
 
 extern QString shovelPath;

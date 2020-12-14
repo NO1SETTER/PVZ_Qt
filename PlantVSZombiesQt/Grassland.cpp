@@ -2,7 +2,6 @@
 #include "Shovel.h"
 #include<iostream>
 
-
 Grassland::Grassland()
 {
     x = y = 0;
@@ -52,14 +51,22 @@ void Grassland::dragLeaveEvent(QGraphicsSceneDragDropEvent *event)
 void Grassland::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
     QPointF pos = event->pos();
-    std::cout<<pos.x()<<" "<<pos.y()<<std::endl;
+    //std::cout<<pos.x()<<" "<<pos.y()<<std::endl;
     if(event->mimeData()->hasText())
     {
         QString data=event->mimeData()->text();
         if(data=="shovel")
         {
-            Shovel* shov = new Shovel;
-            scene()->addItem(shov);
+            QList<QGraphicsItem*> nowitems = scene()->items();
+             for(auto it=nowitems.begin();it!=nowitems.end();it++)
+             {
+                 if((*it)->type()==KIND_PLANT)
+                 {
+                     qgraphicsitem_cast<Shovel* >(*it)->remove(event->pos());
+                     break;
+                 }
+             }
+
         }
         else
         {

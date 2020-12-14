@@ -2,6 +2,7 @@
 #include "Plants.h"
 #include<iostream>
 
+
 plant::plant():
     name("plant"),x(0),y(0),cost(0),interval(0),id(rand()%10000)
 {
@@ -24,7 +25,7 @@ plant::plant(QString _name,int _x,int _y,int _health,int _cost,int _interval):
     QString tempPath="images/Plants/"+name+"/"+name+".gif";
     setGif(tempPath);
 
-    QRectF rect = this->boundingRect();
+    //QRectF rect = this->boundingRect();
 }
 
 bool plant::collidesWithItem(const QGraphicsItem *other, Qt::ItemSelectionMode mode) const
@@ -61,7 +62,6 @@ void plant::hurt(int damage)
 
 void plant::dead()
 {
-	prec[x][y] = NULL;
 }
 
 
@@ -112,123 +112,31 @@ void SunFLower::func()
 
 void PeaShooter::func()
 {
-	if (counter < interval)
-	{
-		counter += 1;
-		return;
-	}
-	counter = 0;
-	int xPos = 0;
-	for (int i = 1; i < 6; i++)
-	{
-		if (brec[LatX(x) + i][LatY(y + 1)] == NULL)
-		{
-			xPos = i;
-			break;
-		}
-	}
-	brec[LatX(x) + xPos][LatY(y + 1)] = new normalPea(LatX(x) + xPos, LatY(y + 1));
+
 }
 
 
 void SnowPea::func()
 {
-	if (counter < interval)
-	{
-		counter += 1;
-		return;
-	}
-	counter = 0;
-	int xPos = 0;
-	for (int i = 1; i < 6; i++)
-	{
-		if (brec[LatX(x) + i][LatY(y + 1)] == NULL)
-		{
-			xPos = i;
-			break;
-		}
-	}
-	brec[LatX(x) + xPos][LatY(y + 1)] = new icePea(LatX(x) + xPos, LatY(y + 1));
+
 }
 
 void Repeater::func()
 {
-	if (counter < interval)
-	{
-		counter += 1;
-		return;
-	}
-	counter = 0;
-
-	int xPos = 0;
-	for (int i = 1; i < 6; i++)
-	{
-		if (brec[LatX(x) + i][LatY(y + 1)] == NULL)
-		{
-			xPos = i;
-			break;
-		}
-	}
-	brec[LatX(x) + xPos][LatY(y + 1)] = new normalPea(LatX(x) + xPos, LatY(y + 1));
-	xPos = 0;
-	for (int i = 1; i < 6; i++)
-	{
-		if (brec[LatX(x) + i][LatY(y + 1)] == NULL)
-		{
-			xPos = i;
-			break;
-		}
-	}
-	brec[LatX(x) + xPos][LatY(y + 1)] = new normalPea(LatX(x) + xPos, LatY(y + 1));
 }
 
 void Squash::func()
 {
-    /*
-	if (findZombie(x, y) != -1)
-	{
-		for (int i = 0; i < 7; i++)
-			if(zrec[x][y][i])
-				zrec[x][y][i]->hurt(attack);
-		
-		prec[x][y] = NULL;
-	}
-	else if ((y + 1 < 10) && findZombie(x, y + 1) != -1 )
-	{
-		for (int i = 0; i < 7; i++)
-			if (zrec[x][y + 1][i])
-				zrec[x][y + 1][i]->hurt(attack);
-		
-		prec[x][y] = NULL;
-    }*/
+
 }
 
 void CherryBomb::func()
 {
-	if (counter < interval)
-	{
-		counter += 1;
-		return;
-	}
 
-	prec[x][y] = NULL;
-	for (int i = x - 1; i <= x + 1; i++)
-		for (int j = y - 1; j <= y + 1; j++)
-		{
-			if (!INRANGE(i, j)) continue;
-			for (int k = 0; k < 7; k++)
-			{
-				if (zrec[i][j][k])
-					zrec[i][j][k]->hurt(attack);
-			}
-		}
 }
 
 void PumpkinHead::dead()
 {
-    if (prec[x][y]->name == "pumpkinhead")
-		prec[x][y] = NULL;
-	else
-		prec[x][y]->removePumpkin();
+
 }
 
