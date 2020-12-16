@@ -5,12 +5,15 @@
 Grassland::Grassland()
 {
     x = y = 0;
+    row = col = 0;
     dragOver = 0;
     setAcceptDrops(1);
 }
 
 Grassland::Grassland(int _x, int _y)
 {
+    row = _y;
+    col = _x;
     x = grassX[_x];
     y = grassY[_y];
     width = grassX[_x + 1] - grassX[_x];
@@ -51,7 +54,6 @@ void Grassland::dragLeaveEvent(QGraphicsSceneDragDropEvent *event)
 void Grassland::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
     QPointF pos = event->pos();
-    //std::cout<<pos.x()<<" "<<pos.y()<<std::endl;
     if(event->mimeData()->hasText())
     {
         QString data=event->mimeData()->text();
@@ -78,28 +80,46 @@ void Grassland::dropEvent(QGraphicsSceneDragDropEvent *event)
                     break;
                 }
             plant* newplant = NULL;
+            QString existplant="noplant";
+            int plantNum = 0;
+            QList<QGraphicsItem*> allplants=scene()->items();
+            for(auto it=allplants.begin();it!=allplants.end();it++)
+            {
+                if((*it)->type()!=KIND_PLANT) continue;
+                if(qgraphicsitem_cast<plant*>(*it)->getRow()==row&&qgraphicsitem_cast<plant*>(*it)->getCol()==col)
+                {
+                    existplant=qgraphicsitem_cast<plant*>(*it)->getName();
+                    plantNum = plantNum + 1;
+                }
+            }
+            if(plantNum >= 2) return;
+            if(plantNum == 1)
+            {
+                if(existplant == "pumpkinhead" && plantName[plantType]=="pumpkinhead") return;
+                if(existplant != "pumpkinhead" && plantName[plantType]!="pumpkinhead") return;
+            }
             switch (plantType)
             {
                 case 0:
-                    newplant = new SunFLower(x,y); break;
+                    newplant = new SunFLower(row,col,x,y); break;
                 case 1:
-                    newplant = new PeaShooter(x,y); break;
+                    newplant = new PeaShooter(row,col,x,y); break;
                 case 2:
-                    newplant = new WallNut(x,y); break;
+                    newplant = new WallNut(row,col,x,y); break;
                 case 3:
-                    newplant = new SnowPea(x,y); break;
+                    newplant = new SnowPea(row,col,x,y); break;
                 case 4:
-                    newplant = new Repeater(x,y); break;
+                    newplant = new Repeater(row,col,x,y); break;
                 case 5:
-                    newplant = new Squash(x,y); break;
+                    newplant = new Squash(row,col,x,y); break;
                 case 6:
-                    newplant = new TallNut(x,y); break;
+                    newplant = new TallNut(row,col,x+5,y-10); break;
                 case 7:
-                    newplant = new CherryBomb(x,y); break;
+                    newplant = new CherryBomb(row,col,x,y+10); break;
                 case 8:
-                    newplant = new Garlic(x,y); break;
+                    newplant = new Garlic(row,col,x+5,y+10); break;
                 case 9:
-                    newplant = new PumpkinHead(x,y); break;
+                    newplant = new PumpkinHead(row,col,x,y+20); break;
                 default:
                     assert(0);
             }

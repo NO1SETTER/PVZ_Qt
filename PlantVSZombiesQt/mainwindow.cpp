@@ -48,7 +48,17 @@ void MainWindow::GenerateZombie()
 if(rand()%100==0)
 {
     int row = rand()%5;
-    zombie* newzombie = new ConeHeadZombie(grassX[9],grassY[row]);
+    int kind = rand()%5;
+    zombie* newzombie;
+    switch(kind)
+    {
+    case 0:newzombie = new NormalZombie(row,grassX[9],grassY[row]);break;
+    case 1:newzombie = new ConeHeadZombie(row,grassX[9],grassY[row]);break;
+    case 2:newzombie = new BucketHeadZombie(row,grassX[9],grassY[row]);break;
+    case 3:newzombie = new FlagZombie(row,grassX[9],grassY[row]);break;
+    case 4:newzombie = new PoleVaultingZombie(row,grassX[9],grassY[row]);break;
+    default:break;
+    }
     scene->addItem(newzombie);
     return;
 }

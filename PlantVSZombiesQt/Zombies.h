@@ -5,6 +5,7 @@ class zombie :public QGraphicsItem
 {
 protected:
     QString name;
+    int row;
     int x, y;
     int width,height;
 	int health;
@@ -15,8 +16,7 @@ protected:
     QMovie* zombieGif;
 public:
     zombie();
-    zombie(int _x,int _y);
-    zombie(QString _name, int _x, int _y,int _health, int _attack, int _speed,int _bonus);
+    zombie(QString _name,int _row,int _x, int _y,int _health, int _attack, int _speed,int _bonus);
 	~zombie();
 
     QRectF boundingRect() const override;
@@ -25,6 +25,7 @@ public:
     int type()const override;
     void setGif(QString GifPath);
 
+    void advance(int phase) override;
 	virtual void bite(plant* plt);//hurt有可能更新地图
 	virtual void hurt(int damage);
 	virtual void move();
@@ -34,6 +35,7 @@ public:
 	virtual void dead();
 	void decelerate(int val, int mode);
 	void accelerate(int val, int mode);
+    int getRow() {return row;}
 
 	const int id;//随机产生的编号,用于标识
 	int status;//STAT_MOV,STAT_BITE
@@ -43,11 +45,23 @@ public:
 	friend class ICEPEA;
 };
 
+
+class NormalZombie:public zombie
+{
+public:
+    NormalZombie(int _row,int _x,int _y):
+        zombie("normalzombie",_row,_x,_y-10,10,1,1,1)
+    {
+
+    }
+
+};
+
 class ConeHeadZombie:public zombie
 {
 public:
-    ConeHeadZombie(int _x,int _y):
-        zombie("coneheadzombie",_x,_y-100,20,1,2,2)
+    ConeHeadZombie(int _row,int _x,int _y):
+        zombie("coneheadzombie",_row,_x,_y-30,20,1,1,2)
     {
 
     }
@@ -56,25 +70,33 @@ public:
 class BucketHeadZombie:public zombie
 {
 public:
-    BucketHeadZombie(int _x,int _y):
-        zombie("bucketheadzombie",_x,_y-100,40,1,2,3)
+    BucketHeadZombie(int _row,int _x,int _y):
+        zombie("bucketheadzombie",_row,_x,_y-30,40,1,1,3)
     {
 
+    }
+};
+
+class FlagZombie:public zombie
+{
+public:
+    FlagZombie(int _row,int _x,int _y):
+        zombie("flagzombie",_row,_x,_y-40,10,1,1,1)
+    {
     }
 };
 
 class PoleVaultingZombie :public zombie
 {
 public:
-	bool func();
-    PoleVaultingZombie(int _x, int _y) :
-        zombie("polevaultingzombie", _x, _y,15,1,3,2)
-	{
-		activated = 0;
+    PoleVaultingZombie(int _row,int _x, int _y) :
+        zombie("polevaultingzombie",_row, _x, _y-120,15,1,3,2)
+    {
 	}
-private:
-	int activated;
+    //void advance(int phase) override;
 };
+
+
 
 
 #define MODE_CHG 0

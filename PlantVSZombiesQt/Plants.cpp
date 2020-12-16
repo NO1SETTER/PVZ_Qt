@@ -4,7 +4,7 @@
 
 
 plant::plant():
-    name("plant"),x(0),y(0),cost(0),interval(0),id(rand()%10000)
+    name("plant"),row(0),col(0),x(0),y(0),cost(0),interval(0),id(rand()%10000)
 {
 	health = 0;
 	counter = 0;
@@ -12,8 +12,8 @@ plant::plant():
     plantGif = NULL;
 }
 
-plant::plant(QString _name,int _x,int _y,int _health,int _cost,int _interval):
-    name(_name),x(_x),y(_y),cost(_cost),interval(_interval),id(rand()%10000)
+plant::plant(QString _name,int _row,int _col,int _x,int _y,int _health,int _cost,int _interval):
+    name(_name),row(_row),col(_col),x(_x),y(_y),cost(_cost),interval(_interval),id(rand()%10000)
 {
     width = plantWidth[plantNameMap[_name]];
     height = plantHeight[plantNameMap[_name]];
@@ -22,10 +22,8 @@ plant::plant(QString _name,int _x,int _y,int _health,int _cost,int _interval):
 
 	ppk = NULL;
     plantGif = NULL;
-    QString tempPath="images/Plants/"+name+"/"+name+".gif";
-    setGif(tempPath);
-
-    //QRectF rect = this->boundingRect();
+    QString plantPath="images/Plants/"+name+"/"+name+".gif";
+    setGif(plantPath);
 }
 
 bool plant::collidesWithItem(const QGraphicsItem *other, Qt::ItemSelectionMode mode) const
@@ -99,43 +97,64 @@ bool plant::removePumpkin()
 	return 1;
 }
 
-void SunFLower::func()
+void PeaShooter::advance(int phase)
 {
-	if (counter < interval)
-	{
-		counter += 1;
-		return;
-	}
-	counter = 0;
-	sun = sun + 50;
+if(!phase) return;
+
+int HasZombie=0;
+QList<QGraphicsItem*> nowitems = scene()->items();
+for(auto it=nowitems.begin();it!=nowitems.end();it++)
+{
+    if((*it)->type()==KIND_ZOMBIE)
+    {
+        //cout<<qgraphicsitem_cast<zombie*>(*it)->getRow()<<"   "<<row<<endl;
+        if(qgraphicsitem_cast<zombie*>(*it)->getRow()==row)
+        {HasZombie=1;
+        break;
+        }
+    }
+}
+if(!HasZombie) return;
+
+if(counter<interval)
+{
+    counter++;
+    return;
 }
 
-void PeaShooter::func()
-{
-
+counter = 0;
+PeaBullet* newbul = new PeaBullet(row,x+width,y+height/6);
+scene()->addItem(newbul);
 }
 
-
-void SnowPea::func()
+void SnowPea::advance(int phase)
 {
+    if(!phase) return;
+    int HasZombie=0;
+    QList<QGraphicsItem*> nowitems = scene()->items();
+    for(auto it=nowitems.begin();it!=nowitems.end();it++)
+    {
+        if((*it)->type()==KIND_ZOMBIE)
+        {
+            if(qgraphicsitem_cast<zombie*>(*it)->getRow()==row)
+            {HasZombie=1;
+            break;}
+        }
+    }
+    if(!HasZombie) return;
 
+    if(counter<interval)
+    {
+        counter++;
+        return;
+    }
+
+    counter = 0;
+    SnowPeaBullet* newbul = new SnowPeaBullet(row,x+width,y+height/6);
+    scene()->addItem(newbul);
 }
 
-void Repeater::func()
-{
-}
-
-void Squash::func()
-{
-
-}
-
-void CherryBomb::func()
-{
-
-}
-
-void PumpkinHead::dead()
+void Repeater::advance(int phase)
 {
 
 }

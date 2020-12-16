@@ -28,23 +28,36 @@ const QMap<QString,int> plantNameMap={
     {"pumpkinhead",9}
 };
 
-int zombieWidth[5]={105,105,105,105,105};
-int zombieHeight[5]={120,135,135,120,120};
+
+int zombieWidth[5]={95,95,100,115,200};
+int zombieHeight[5]={120,135,135,145,230};
 QString zombieName[5]={
-    "zombie",
+    "normalzombie",
     "coneheadzombie",
     "bucketheadzombie",
     "flagzombie",
     "polevaultingzombie"
 };
-
 const QMap<QString,int> zombieNameMap={
-    {"zombie",0},
+    {"normalzombie",0},
     {"coneheadzombie",1},
     {"bucketheadzombie",2},
     {"flagzombie",3},
     {"polevaultingzombie",4},
 };
+
+
+int bulletWidth[2]={40,40};
+int bulletHeight[2]={25,25};
+QString bulletName[2]={
+    "peabullet",
+    "snowpeabullet"
+};
+const QMap<QString,int> bulletNameMap={
+    {"peabullet",0},
+    {"snowpeabullet",1}
+};
+
 
 int grassX[10]={250,330,410,495,580,660,740,810,900,990};
 int grassY[6]={80,180,280,375,470,570};

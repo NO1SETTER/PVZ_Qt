@@ -49,7 +49,11 @@ extern int zombieWidth[5];
 extern int zombieHeight[5];
 extern QString zombieName[5];
 extern const QMap<QString,int> zombieNameMap;
-
+//子弹的信息
+extern int bulletWidth[2];
+extern int bulletHeight[2];
+extern QString bulletName[2];
+extern const QMap<QString,int> bulletNameMap;
 //草地的信息
 extern int grassX[10];
 extern int grassY[6];

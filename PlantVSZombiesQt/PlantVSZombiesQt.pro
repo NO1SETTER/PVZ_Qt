@@ -23,7 +23,6 @@ SOURCES += \
 HEADERS += \
     Bullet.h \
     Cards.h \
-    Color.h \
     Common.h \
     Grassland.h \
     Plants.h \

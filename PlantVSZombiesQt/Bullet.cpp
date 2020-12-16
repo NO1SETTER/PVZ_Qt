@@ -1,54 +1,59 @@
 #include "Bullet.h"
 #include "Plants.h"
 #include "Zombies.h"
-#include "Color.h"
-
 bullet::bullet():
-	name("Bullet"),attack(0),speed(0),kind(-1),id(rand()%10000)
+    name("Bullet"),row(0),attack(0),speed(0),id(rand()%10000)
 {
 	x = y = 0;
+    width=height = 0;
+    bulletGif = NULL;
 }
 
-bullet::bullet(const char* _name,const char* _color, int _x, int _y, int _kind, int _attack, int _speed) :
-	name(_name),color(_color),kind(_kind),attack(_attack),speed(_speed),id(rand()%10000)
+bullet::bullet(QString _name,int _row,int _x,int _y,int _attack, int _speed):
+    name(_name),row(_row),attack(_attack),speed(_speed),id(rand()%10000)
 {
 	x = _x;
 	y = _y;
+    width = bulletWidth[bulletNameMap[_name]];
+    height = bulletHeight[bulletNameMap[_name]];
+    bulletGif = NULL;
+    QString bulletPath="images/Plants/"+_name+".gif";
+    setGif(bulletPath);
 }
 
-bullet::~bullet()
+
+QRectF bullet::boundingRect() const
 {
+    return QRectF(x,y,width,height);
 }
 
-zombie* bullet::move()
+void bullet::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-/*
-	brec[x][y] = NULL;
-	int nextPos = y + speed;
-    for (int i = NormY(y); i <= NormY(min(nextPos,129)); i++)
-	{
-		for (int no = 0; no < 7; no++)
-		{
-			if(zrec[NormX(x)][i][no]&&zrec[NormX(x)][i][no]->kind!=KIND_BB)
-				return zrec[NormX(x)][i][no];
-		}	
-	}
-	y = nextPos;
-    if (y <= 130) brec[x][y] = this;*/
-	return NULL;
+Q_UNUSED(option);
+Q_UNUSED(widget);
+painter->drawPixmap(QRect(x,y,width,height),bulletGif->currentPixmap());
 }
 
-
-void PEA::explode(zombie* zb)
+bool bullet::collidesWithItem(const QGraphicsItem *other, Qt::ItemSelectionMode mode) const
 {
+return 0;
 }
 
-
-
-void ICEPEA::explode(zombie* zb)
+int bullet::type()const
 {
+    return KIND_BULLET;
 }
 
+void bullet::setGif(QString bulletPath)
+{
+    if(bulletGif)
+        delete bulletGif;
+    bulletGif =new QMovie(bulletPath);
+    bulletGif->start();
+}
 
-
-
+void bullet::advance(int phase)
+{
+    if(!phase) return;
+    x = x + speed;
+}

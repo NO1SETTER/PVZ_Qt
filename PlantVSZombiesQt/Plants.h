@@ -6,6 +6,7 @@ class PumpkinHead;
 class plant:public QGraphicsItem
 {
 protected:
+    const int row,col;
 	const int  x, y;
     int width,height;
 	int health;
@@ -16,7 +17,7 @@ protected:
     //QPixmap* pix;
 public:
 	plant();
-    plant(QString _name,int _x,int _y,int _health,int _cost,int _interval);
+    plant(QString _name,int _row,int _col,int _x,int _y,int _health,int _cost,int _interval);
 	~ plant();
 
     QRectF boundingRect() const override;
@@ -27,8 +28,6 @@ public:
 
 	void hurt(int damage);//hurt有可能更新地图
 	virtual void dead();
-	virtual void func(){}
-
 
     QString name;
 	const int  id;
@@ -37,14 +36,16 @@ public:
     bool addPumpkin(PumpkinHead* _ppk);
     PumpkinHead* getPumpkin();
 	bool removePumpkin();
+    int getRow() {return row;}
+    int getCol() {return col;}
+    QString getName() {return name;}
 };
 
 class SunFLower : public plant
 {
 public:
-	void func();
-    SunFLower(int _x, int _y) :
-        plant("sunflower",_x, _y, 8, 50, 30)
+    SunFLower(int _row,int _col,int _x, int _y) :
+        plant("sunflower",_row,_col,_x, _y, 8, 50, 30)
 	{
 	}
 };
@@ -52,9 +53,9 @@ public:
 class PeaShooter :public plant
 {
 public:
-	void func();
-    PeaShooter(int _x, int _y) :
-        plant("peashooter", _x, _y,10,100,5)
+    void advance(int phase)override;
+    PeaShooter(int _row,int _col,int _x, int _y) :
+        plant("peashooter",_row,_col, _x, _y,10,100,20)
 	{
 	}
 };
@@ -62,8 +63,8 @@ public:
 class WallNut : public plant
 {
 public:
-    WallNut(int _x, int _y) :
-        plant("wallnut",_x, _y,80 ,50 ,0)
+    WallNut(int _row,int _col,int _x, int _y) :
+        plant("wallnut",_row,_col,_x, _y,80 ,50 ,0)
 	{
 	}
 };
@@ -71,9 +72,9 @@ public:
 class SnowPea :public plant
 {
 public:
-	void func();
-    SnowPea(int _x, int _y) :
-        plant("snowpea", _x, _y,10 ,175 ,5 )
+    void advance(int phase)override;
+    SnowPea(int _row,int _col,int _x, int _y) :
+        plant("snowpea",_row,_col, _x, _y,10 ,175 ,20)
 	{
 	}
 };
@@ -81,9 +82,9 @@ public:
 class Repeater :public plant
 {
 public:
-	void func();
-    Repeater(int _x, int _y) :
-        plant("repeater",_x ,_y,10 ,200 ,5)
+    void advance(int phase)override;
+    Repeater(int _row,int _col,int _x, int _y) :
+        plant("repeater",_row,_col, _x ,_y,10 ,200 ,20)
 	{
 	}
 };
@@ -91,9 +92,8 @@ public:
 class Squash : public plant
 {
 public:
-	void func();
-    Squash(int _x, int _y) :
-        plant("squash", _x, _y, 100000, 50, 0)
+    Squash(int _row,int _col,int _x, int _y) :
+        plant("squash",_row,_col, _x, _y, 100000, 50, 0)
 	{
 		attack = 80;
 	}
@@ -104,8 +104,8 @@ private:
 class TallNut: public plant
 {
 public:
-    TallNut(int _x, int _y) :
-        plant("tallnut", _x, _y, 200, 125, 0)
+    TallNut(int _row,int _col,int _x, int _y) :
+        plant("tallnut",_row,_col, _x, _y, 200, 125, 0)
 	{
 	}
 };
@@ -113,9 +113,8 @@ public:
 class CherryBomb : public plant
 {
 public:
-	void func();
-    CherryBomb(int _x, int _y):
-        plant("cherrybomb", _x, _y, 10000, 150, 2)
+    CherryBomb(int _row,int _col,int _x, int _y):
+        plant("cherrybomb",_row,_col, _x, _y, 10000, 150, 2)
 	{
 		attack = 80;
 	}
@@ -127,8 +126,8 @@ private:
 class Garlic: public plant
 {
 public:
-    Garlic(int _x, int _y) :
-        plant("garlic", _x, _y, 20, 50, 0)
+    Garlic(int _row,int _col,int _x, int _y) :
+        plant("garlic",_row,_col, _x, _y, 20, 50, 0)
 	{
 	}
 };
@@ -137,12 +136,10 @@ public:
 class PumpkinHead :public plant
 {
 public:
-    PumpkinHead(int _x, int _y) :
-        plant("pumpkinhead", _x, _y, 60, 125, 0)
+    PumpkinHead(int _row,int _col,int _x, int _y) :
+        plant("pumpkinhead",_row,_col, _x, _y, 60, 125, 0)
 	{
 	}
-private:
-	void dead();
 };
 
 

@@ -20,20 +20,8 @@ zombie::zombie():
 	status = STAT_MOV;
 }
 
-zombie::zombie(int _x,int _y):           //这个其实不是zombie基类的构造器,它其实是代表原本应有的派生类普通僵尸的构造器
-    name("zombie"),x(_x),y(_y-10),health(10),attack(1),speed(2),bonus(1),id(rand()%10000)
-{
-    width=zombieWidth[zombieNameMap["zombie"]];
-    height=zombieHeight[zombieNameMap["zombie"]];
-    status=STAT_MOV;
-    zombieGif = NULL;
-    QString zombiePath="images/Zombies/Zombie/Zombie.gif";
-    setGif(zombiePath);
-}
-
-
-zombie:: zombie(QString _name, int _x, int _y,int _health, int _attack, int _speed,int _bonus):
-    name(_name),x(_x),y(_y),attack(_attack),bonus(_bonus),id(rand()%10000)
+zombie::zombie(QString _name,int _row, int _x, int _y,int _health, int _attack, int _speed,int _bonus):
+    name(_name),row(_row),x(_x),y(_y),attack(_attack),bonus(_bonus),id(rand()%10000)
 {
     width=zombieWidth[zombieNameMap[_name]];
     height=zombieHeight[zombieNameMap[_name]];
@@ -76,9 +64,15 @@ void zombie::setGif(QString GifPath)
     if(zombieGif)
         delete zombieGif;
     zombieGif = new QMovie(GifPath);
-
     zombieGif->start();
 }
+
+void zombie::advance(int phase)
+{
+   if(!phase) return;
+   x = x - speed;
+}
+
 
 void zombie::bite(plant* plt)
 {
@@ -117,11 +111,6 @@ void zombie::decelerate(int val, int mode)
 		speed = val;
 }
 
-
-bool PoleVaultingZombie:: func()
-{
-    return 0;
-}
 
 
 

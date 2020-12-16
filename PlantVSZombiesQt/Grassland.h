@@ -1,7 +1,6 @@
 #pragma once
 #include<conio.h>
 #include<windows.h>
-#include"Color.h"
 #include"Common.h"
 #include"Plants.h"
 
@@ -12,6 +11,7 @@ public:
 	Grassland();
 	Grassland(int _x, int _y);
 private:
+    int row,col;//行列
     int x, y;//在草地中的坐标
     int width,height;
     bool dragOver;
@@ -21,5 +21,6 @@ private:
     void dragLeaveEvent(QGraphicsSceneDragDropEvent *event) override;
     void dropEvent(QGraphicsSceneDragDropEvent *event) override;
     int type()const override;
+    int getRow() {return row;}
 };
 
