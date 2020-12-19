@@ -1,32 +1,5 @@
 #include"Cards.h"
-/*
-QString cardPath[10]={
-    "images/Card/Plants/sunFlower.png",
-    "images/Card/Plants/Peashooter.png",
-    "images/Card/Plants/WallNut.png",
-    "images/Card/Plants/SnowPea.png",
-    "images/Card/Plants/Repeater.png",
-    "images/Card/Plants/Squash.png",
-    "images/Card/Plants/TallNut.png",
-    "images/Card/Plants/CherryBomb.png",
-    "images/Card/Plants/Garlic.png",
-    "images/Card/Plants/PumpkinHead.png",
-};
 
-QString plantPath[10]={
-   "images/Plants/SunFLower/SunFlower.gif",
-   "images/Plants/Peashooter/Peashooter.gif",
-   "images/Plants/WallNut/WallNut.gif",
-   "images/Plants/SnowPea/SnowPea.gif",
-   "images/Plants/Repeater/Repeater.gif",
-   "images/Plants/Squash/Squash.gif",
-   "images/Plants/TallNut/TallNut.gif",
-   "images/Plants/CherryBomb/CherryBomb.gif",
-   "images/Plants/Garlic/Garlic.gif",
-   "images/Plants/PumpkinHead/PumpkinHead.gif",
-
-};
-*/
 Card::Card()
 {
 
@@ -39,6 +12,23 @@ Card::Card(int _id)
     QString plantPath = "images/Plants/"+plantName[id]+"/"+plantName[id]+".gif";
     cardPic = QPixmap(cardPath);
     plantPic = QPixmap(plantPath);
+    CD = CDcounter = plantCD[_id];
+}
+
+void Card::advance(int phase)
+{
+    if(!phase) return;
+    if(CDcounter < CD) CDcounter = CDcounter + 1;
+}
+
+bool Card::available()
+{
+    return CD == CDcounter;
+}
+
+void Card::resetCD()
+{
+    CDcounter =0;
 }
 
 void Card::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -46,6 +36,15 @@ void Card::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     Q_UNUSED(option);
     Q_UNUSED(widget);
     painter->drawPixmap(QRect(0,id*55,100,60),cardPic);
+
+    if(!available())
+    {
+        QFont font;
+        font.setPointSizeF(15);
+        font.setFamily("SimHei");
+        painter->setFont(font);
+        painter->drawText(QRectF(80,id*55+5,20,15), Qt::AlignCenter, "CD");
+    }
 }
 
 QRectF Card::boundingRect() const

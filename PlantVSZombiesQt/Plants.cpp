@@ -1,27 +1,33 @@
 #include "Zombies.h"
 #include "Plants.h"
-#include<iostream>
+#include "PumpkinHead.h"
 
 
 plant::plant():
-    name("plant"),row(0),col(0),x(0),y(0),cost(0),interval(0),id(rand()%10000)
+    name("plant"),row(0),col(0),x(0),y(0),cost(0),id(rand()%10000)
 {
 	health = 0;
-	counter = 0;
 	ppk = NULL;
     plantGif = NULL;
 }
 
-plant::plant(QString _name,int _row,int _col,int _x,int _y,int _health,int _cost,int _interval):
-    name(_name),row(_row),col(_col),x(_x),y(_y),cost(_cost),interval(_interval),id(rand()%10000)
+plant::plant(QString _name,int _row,int _col,int _x,int _y,int _health,int _cost):
+    name(_name),row(_row),col(_col),x(_x),y(_y),cost(_cost),id(rand()%10000)
 {
     width = plantWidth[plantNameMap[_name]];
     height = plantHeight[plantNameMap[_name]];
     health = _health;
-	counter = interval - 1;
 
 	ppk = NULL;
     plantGif = NULL;
+    ppkBack = new QMovie("images/Plants/PumpkinHead/Pumpkin_Back.gif");
+    ppk1 = new QMovie("images/Plants/PumpkinHead/PumpkinHead1.gif");
+    ppk2 = new QMovie("images/Plants/PumpkinHead/Pumpkin_damage1.gif");
+    ppk3 = new QMovie("images/Plants/PumpkinHead/Pumpkin_damage2.gif");
+    ppkBack->start();
+    ppk1->start();
+    ppk2->start();
+    ppk3->start();
     QString plantPath="images/Plants/"+name+"/"+name+".gif";
     setGif(plantPath);
 }
@@ -29,9 +35,7 @@ plant::plant(QString _name,int _row,int _col,int _x,int _y,int _health,int _cost
 bool plant::collidesWithItem(const QGraphicsItem *other, Qt::ItemSelectionMode mode) const
 {
     Q_UNUSED(mode);
-    QRectF rect1 = this->boundingRect();
-    QRectF rect2 = other->boundingRect();
-    return (other->type() == KIND_ZOMBIE) && (rect1.top() == rect2.top()) && (rect1.left() + rect1.width() + 30 >= rect2.left());
+    return 0;
 }
 
 int plant::type()const
@@ -47,21 +51,26 @@ void plant::setGif(QString GifPath)
     plantGif->start();
 }
 
-plant::~plant()
-{
-}
 
 void plant::hurt(int damage)
 {
 	health = health - damage;
-	if (health <= 0)
-		dead();
+    if(health<=0) dead();
 }
 
 void plant::dead()
 {
+    scene()->removeItem(this);
+    delete this;
 }
 
+void plant::setRect(int _left,int _top,int _width,int _height)
+{
+    x = _left;
+    y = _top;
+    width = _width;
+    height = _height;
+}
 
 QRectF plant::boundingRect() const
 {
@@ -72,10 +81,16 @@ void plant::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
-    if(name == "pumpkinhead")
-        painter->drawPixmap(QRect(x,y+20,width,height),plantGif->currentPixmap());
-    else
+    if(ppk)
+    {
+        painter->drawPixmap(QRect(x-5,y+35,plantWidth[9],plantHeight[9]),ppkBack->currentPixmap());
         painter->drawPixmap(QRect(x,y,width,height),plantGif->currentPixmap());
+        if(ppk->health>150)
+             painter->drawPixmap(QRect(x-5,y+30,plantWidth[9],plantHeight[9]),ppk1->currentPixmap());
+        else if(ppk->health>80)  painter->drawPixmap(QRect(x-5,y+30,plantWidth[9],plantHeight[9]),ppk2->currentPixmap());
+        else  painter->drawPixmap(QRect(x-5,y+30,plantWidth[9],plantHeight[9]),ppk3->currentPixmap());
+    }
+    else painter->drawPixmap(QRect(x,y,width,height),plantGif->currentPixmap());
 }
 
 bool plant::addPumpkin(PumpkinHead* _ppk)//给它传一个空的也ok
@@ -97,65 +112,12 @@ bool plant::removePumpkin()
 	return 1;
 }
 
-void PeaShooter::advance(int phase)
-{
-if(!phase) return;
 
-int HasZombie=0;
-QList<QGraphicsItem*> nowitems = scene()->items();
-for(auto it=nowitems.begin();it!=nowitems.end();it++)
-{
-    if((*it)->type()==KIND_ZOMBIE)
-    {
-        //cout<<qgraphicsitem_cast<zombie*>(*it)->getRow()<<"   "<<row<<endl;
-        if(qgraphicsitem_cast<zombie*>(*it)->getRow()==row)
-        {HasZombie=1;
-        break;
-        }
-    }
-}
-if(!HasZombie) return;
 
-if(counter<interval)
-{
-    counter++;
-    return;
-}
 
-counter = 0;
-PeaBullet* newbul = new PeaBullet(row,x+width,y+height/6);
-scene()->addItem(newbul);
-}
 
-void SnowPea::advance(int phase)
-{
-    if(!phase) return;
-    int HasZombie=0;
-    QList<QGraphicsItem*> nowitems = scene()->items();
-    for(auto it=nowitems.begin();it!=nowitems.end();it++)
-    {
-        if((*it)->type()==KIND_ZOMBIE)
-        {
-            if(qgraphicsitem_cast<zombie*>(*it)->getRow()==row)
-            {HasZombie=1;
-            break;}
-        }
-    }
-    if(!HasZombie) return;
 
-    if(counter<interval)
-    {
-        counter++;
-        return;
-    }
 
-    counter = 0;
-    SnowPeaBullet* newbul = new SnowPeaBullet(row,x+width,y+height/6);
-    scene()->addItem(newbul);
-}
 
-void Repeater::advance(int phase)
-{
 
-}
 

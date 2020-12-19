@@ -1,6 +1,16 @@
 #include "Grassland.h"
 #include "Shovel.h"
-#include<iostream>
+#include "SunFLower.h"
+#include "PeaShooter.h"
+#include "SnowPea.h"
+#include "Repeater.h"
+#include "WallNut.h"
+#include "Squash.h"
+#include "TallNut.h"
+#include "CherryBomb.h"
+#include "Garlic.h"
+#include "PumpkinHead.h"
+#include "Cards.h"
 
 Grassland::Grassland()
 {
@@ -41,8 +51,7 @@ void Grassland::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
         event->setAccepted(1);
         update();
     }
-    else
-        event->setAccepted(0);
+    else event->setAccepted(0);
 }
 
 void Grassland::dragLeaveEvent(QGraphicsSceneDragDropEvent *event)
@@ -80,7 +89,7 @@ void Grassland::dropEvent(QGraphicsSceneDragDropEvent *event)
                     break;
                 }
             plant* newplant = NULL;
-            QString existplant="noplant";
+            plant* existplant=NULL;
             int plantNum = 0;
             QList<QGraphicsItem*> allplants=scene()->items();
             for(auto it=allplants.begin();it!=allplants.end();it++)
@@ -88,15 +97,15 @@ void Grassland::dropEvent(QGraphicsSceneDragDropEvent *event)
                 if((*it)->type()!=KIND_PLANT) continue;
                 if(qgraphicsitem_cast<plant*>(*it)->getRow()==row&&qgraphicsitem_cast<plant*>(*it)->getCol()==col)
                 {
-                    existplant=qgraphicsitem_cast<plant*>(*it)->getName();
+                    existplant=qgraphicsitem_cast<plant*>(*it);
                     plantNum = plantNum + 1;
                 }
             }
             if(plantNum >= 2) return;
             if(plantNum == 1)
             {
-                if(existplant == "pumpkinhead" && plantName[plantType]=="pumpkinhead") return;
-                if(existplant != "pumpkinhead" && plantName[plantType]!="pumpkinhead") return;
+                if(existplant->getName() == "pumpkinhead" && plantName[plantType]=="pumpkinhead") return;
+                if(existplant->getName() != "pumpkinhead" && plantName[plantType]!="pumpkinhead") return;
             }
             switch (plantType)
             {
@@ -123,7 +132,28 @@ void Grassland::dropEvent(QGraphicsSceneDragDropEvent *event)
                 default:
                     assert(0);
             }
+            if(sun < newplant->cost || !cards[plantType]->available()) return;
+            else {
+                sun =sun - newplant->cost;
+                cards[plantType]->resetCD();
+            }
+
+            if(plantNum==1)//说明一定是叠南瓜的情况
+            {
+                if(newplant->getName()=="pumpkinhead")
+                {
+                    existplant->addPumpkin(qgraphicsitem_cast<PumpkinHead*>(newplant));
+                    qgraphicsitem_cast<PumpkinHead*>(newplant)->setProtector(existplant);
+
+                }
+                else
+                {
+                    newplant->addPumpkin(qgraphicsitem_cast<PumpkinHead*>(existplant));
+                    qgraphicsitem_cast<PumpkinHead*>(existplant)->setProtector(newplant);
+                }
+            }
             scene()->addItem(newplant);
+
         }
     }
 }

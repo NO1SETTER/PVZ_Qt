@@ -26,21 +26,7 @@ public:
     const int id;//随机产生的编号,用于标识
 };
 
-class PeaBullet :public bullet
-{
-public:
-    PeaBullet(int _row, int _x, int _y) :
-        bullet("peabullet",_row,_x,_y,1,5)
-	{
-	}
-};
 
-class SnowPeaBullet :public bullet
-{
-public:
-    SnowPeaBullet(int _row, int _x, int _y) :
-        bullet("snowpeabullet",_row,_x,_y,1,5)
-	{
-	}
-};
+
+
 

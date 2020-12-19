@@ -5,6 +5,7 @@
 
 int main(int argc, char *argv[])
 {
+    srand((int)time(0));
     QApplication a(argc, argv);
     QString nowPath("../PlantVSZombiesQt");
     QDir::setCurrent(nowPath);//工作目录设置到源代码目录下

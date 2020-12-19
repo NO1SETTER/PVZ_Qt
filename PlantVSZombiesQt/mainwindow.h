@@ -9,6 +9,12 @@
 #include "Cards.h"
 #include "Grassland.h"
 #include "Shovel.h"
+#include "SunPanel.h"
+#include "NormalZombie.h"
+#include "ConeHeadZombie.h"
+#include "BucketHeadZombie.h"
+#include "FlagZombie.h"
+#include "PoleVaultingZombie.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -24,10 +30,13 @@ public:
 
 private slots:
     void GenerateZombie();
+    void GenerateSun();
 private:
     Ui::MainWindow *ui;
     QGraphicsScene* scene;
     QTimer* timer;
+    QTimer* timer2;
+    QTimer* sunTimer;
 
 };
 #endif // MAINWINDOW_H

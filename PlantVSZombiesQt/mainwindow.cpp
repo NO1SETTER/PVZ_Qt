@@ -1,8 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
-Card* cards[10];
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -14,11 +11,12 @@ MainWindow::MainWindow(QWidget *parent)
     scene->setSceneRect(0,0,1,1);
     for(int i = 0;i< 10;i++)
     {   cards[i] = new Card(i);
-        if(i<curPlantNum)
         scene->addItem(cards[i]);
     }
     Shovel* shovel = new Shovel();
     scene->addItem(shovel);
+    SunPanel* sunpanel = new SunPanel();
+    scene->addItem(sunpanel);
     for(int i = 0;i < 5;i++)
         for(int j = 0;j < 9;j++)
         {
@@ -33,6 +31,15 @@ MainWindow::MainWindow(QWidget *parent)
     connect(timer,SIGNAL(timeout()),this,SLOT(GenerateZombie()));
     timer->start();
 
+    timer2 = new QTimer();
+    timer2->setInterval(10000000);//最多运行10000秒
+    timer2->start();
+
+    sunTimer = new QTimer();
+    sunTimer->setInterval(10000);
+    connect(sunTimer,SIGNAL(timeout()),this,SLOT(GenerateSun()));
+    sunTimer->start();
+
     ui->view->setScene(scene);
     ui->view->resize(backGroundImage.width(),backGroundImage.height());
     ui->view->show();
@@ -45,11 +52,18 @@ MainWindow::~MainWindow()
 
 void MainWindow::GenerateZombie()
 {
-if(rand()%100==0)
+int freq;
+if(timer2->remainingTime()>=1000000 - 60000) freq = 500;
+else if(timer2->remainingTime()>= 1000000 - 120000) freq = 300;
+else if(timer2->remainingTime()>= 1000000 - 180000) freq = 200;
+else if(timer2->remainingTime()>= 1000000 - 300000) freq = 100;
+else freq = 50;
+
+if(rand()%freq==0)
 {
     int row = rand()%5;
     int kind = rand()%5;
-    zombie* newzombie;
+    zombie* newzombie;//=new PoleVaultingZombie(row,grassX[9],grassY[row]);
     switch(kind)
     {
     case 0:newzombie = new NormalZombie(row,grassX[9],grassY[row]);break;
@@ -63,6 +77,13 @@ if(rand()%100==0)
     return;
 }
 }
+
+void MainWindow::GenerateSun()
+{
+    sun = sun + 25;
+}
+
+
 
 
 
