@@ -14,5 +14,4 @@ public:
     int counter;
 };
 
-
 #endif // SNOWPEA_H

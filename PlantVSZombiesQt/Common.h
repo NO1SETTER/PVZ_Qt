@@ -80,4 +80,3 @@ extern Card* cards[10];
 extern int sun;
 extern int point ;
 
-void fail();

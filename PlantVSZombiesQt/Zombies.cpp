@@ -174,7 +174,6 @@ void zombie::dead()
     return;
 }
 
-
 void zombie::decelerate(int val, int mode)
 {
 	if (mode == MODE_CHG)

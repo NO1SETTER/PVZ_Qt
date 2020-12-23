@@ -5,6 +5,8 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QFileDialog>
+#include <QPushButton>
+#include <QSound>
 #include "Common.h"
 #include "Cards.h"
 #include "Grassland.h"
@@ -15,6 +17,7 @@
 #include "BucketHeadZombie.h"
 #include "FlagZombie.h"
 #include "PoleVaultingZombie.h"
+#include "EndSign.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -31,12 +34,15 @@ public:
 private slots:
     void GenerateZombie();
     void GenerateSun();
+    void CheckZombie();
 private:
     Ui::MainWindow *ui;
+    QSound* music;
     QGraphicsScene* scene;
     QTimer* timer;
     QTimer* timer2;
     QTimer* sunTimer;
+    bool isEnd;
 
 };
 #endif // MAINWINDOW_H

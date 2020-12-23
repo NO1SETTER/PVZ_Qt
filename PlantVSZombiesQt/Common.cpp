@@ -64,10 +64,5 @@ Card* cards[10];
 int grassX[10]={250,330,410,495,580,660,740,810,900,990};
 int grassY[6]={80,180,280,375,470,570};
 
-int sun = 5000;
+int sun = 50;
 int point = 0;
-void fail()
-{
-	exit(0);
-}
-

@@ -4,7 +4,7 @@
 class zombie :public QGraphicsItem
 {
 protected:
-    QString name;
+
     int row;
     int x, y;
     int width,height;
@@ -41,7 +41,8 @@ public:
     int getX() {return x;}
 	const int id;//随机产生的编号,用于标识
 	int status;//STAT_MOV,STAT_BITE
-	
+    QString name;
+
 	friend class bullet;
 	friend class PEA;
 	friend class ICEPEA;
@@ -49,3 +50,4 @@ public:
 
 #define MODE_CHG 0
 #define MODE_SET 1
+

@@ -5,7 +5,7 @@ class NormalZombie:public zombie
 {
 public:
     NormalZombie(int _row,int _x,int _y):
-        zombie("normalzombie",_row,_x,_y-10,10,1,1,1)
+        zombie("normalzombie",_row,_x,_y-10,10,1,2,1)
     {
     }
 

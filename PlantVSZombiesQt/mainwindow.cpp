@@ -5,6 +5,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    isEnd = 0;
     QPixmap backGroundImage = QPixmap("images/interface/background1.jpg");
     ui->view->setBackgroundBrush(backGroundImage);
     scene = new QGraphicsScene;
@@ -24,11 +25,16 @@ MainWindow::MainWindow(QWidget *parent)
             scene->addItem(grass);
         }
 
+    music = new QSound("CrazyDave.wav");
+    music->setLoops(QSound::Infinite);
+    music->play();
+
     timer = new QTimer();
     timer->setInterval(100);
     connect(timer,SIGNAL(timeout()),scene,SLOT(advance()));
     connect(timer,SIGNAL(timeout()),scene,SLOT(update()));
     connect(timer,SIGNAL(timeout()),this,SLOT(GenerateZombie()));
+    connect(timer,SIGNAL(timeout()),this,SLOT(CheckZombie()));
     timer->start();
 
     timer2 = new QTimer();
@@ -53,10 +59,10 @@ MainWindow::~MainWindow()
 void MainWindow::GenerateZombie()
 {
 int freq;
-if(timer2->remainingTime()>=1000000 - 60000) freq = 500;
-else if(timer2->remainingTime()>= 1000000 - 120000) freq = 300;
-else if(timer2->remainingTime()>= 1000000 - 180000) freq = 200;
-else if(timer2->remainingTime()>= 1000000 - 300000) freq = 100;
+if(timer2->remainingTime()>=1000000 - 30000) freq = 300;
+else if(timer2->remainingTime()>= 1000000 - 60000) freq = 200;
+else if(timer2->remainingTime()>= 1000000 - 120000) freq = 150;
+else if(timer2->remainingTime()>= 1000000 - 180000) freq = 100;
 else freq = 50;
 
 if(rand()%freq==0)
@@ -83,8 +89,26 @@ void MainWindow::GenerateSun()
     sun = sun + 25;
 }
 
-
-
-
-
+void MainWindow::CheckZombie()
+{
+    if(isEnd) assert(0);
+    QList<QGraphicsItem*> items = scene->items();
+    for(auto it = items.begin();it!=items.end();it++)
+    {
+        if((*it)->type()!=KIND_ZOMBIE) continue;
+        zombie* zb = qgraphicsitem_cast<zombie*>(*it);
+        if(zb->getX()<150&&zb->name!="polevaultingzombie")
+        {
+            EndSign* sign =new EndSign();
+            scene->addItem(sign);
+            isEnd = 1;
+        }
+        else if (zb->getX()<50&&zb->name=="polevaultingzombie")
+        {
+            EndSign* sign =new EndSign();
+            scene->addItem(sign);
+            isEnd = 1;
+        }
+    }
+}
 
