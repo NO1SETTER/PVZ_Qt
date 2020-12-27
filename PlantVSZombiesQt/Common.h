@@ -70,9 +70,9 @@ extern int grassY[6];
 //卡片的信息
 extern Card* cards[10];
 //此处的PVZ是PoleVaultingZombie..
-#define PVZ_JUMP1_WIDTH 280
+#define PVZ_JUMP1_WIDTH 310
 #define PVZ_JUMP1_HEIGHT 210
-#define PVZ_JUMP2_WIDTH 240
+#define PVZ_JUMP2_WIDTH 310
 #define PVZ_JUMP2_HEIGHT 210
 #define PVZ_WALKING_WIDTH 320
 #define PVZ_WALKING_HEIGHT 210

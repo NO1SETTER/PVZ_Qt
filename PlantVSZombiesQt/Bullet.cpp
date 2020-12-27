@@ -48,6 +48,10 @@ bool bullet::collidesWithItem(const QGraphicsItem *other, Qt::ItemSelectionMode 
     {
          if(row == zrow &&rect1.left()+rect1.width()-110>=rect2.left() && rect1.left()-100<= rect2.left()) return 1;
     }
+    else if(frontzb->name=="polevaultingzombie")
+    {
+        if(row == zrow && rect1.left()+rect1.width()-150>=rect2.left() && rect1.left()-140<=rect2.left()) return 1;
+    }
     else if(row == zrow &&rect1.left()+rect1.width()-30>=rect2.left() && rect1.left()-20<= rect2.left()) return 1;
 
     return 0;

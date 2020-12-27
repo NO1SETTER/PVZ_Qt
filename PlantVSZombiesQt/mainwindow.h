@@ -18,6 +18,7 @@
 #include "FlagZombie.h"
 #include "PoleVaultingZombie.h"
 #include "EndSign.h"
+#include "PauseButton.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

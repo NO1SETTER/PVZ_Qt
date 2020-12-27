@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     scene->addItem(shovel);
     SunPanel* sunpanel = new SunPanel();
     scene->addItem(sunpanel);
+
     for(int i = 0;i < 5;i++)
         for(int j = 0;j < 9;j++)
         {
@@ -46,6 +47,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(sunTimer,SIGNAL(timeout()),this,SLOT(GenerateSun()));
     sunTimer->start();
 
+    PauseButton* pbutton = new PauseButton(timer,timer2,sunTimer);
+    scene->addItem(pbutton);
     ui->view->setScene(scene);
     ui->view->resize(backGroundImage.width(),backGroundImage.height());
     ui->view->show();
@@ -61,8 +64,8 @@ void MainWindow::GenerateZombie()
 int freq;
 if(timer2->remainingTime()>=1000000 - 30000) freq = 300;
 else if(timer2->remainingTime()>= 1000000 - 60000) freq = 200;
-else if(timer2->remainingTime()>= 1000000 - 120000) freq = 150;
-else if(timer2->remainingTime()>= 1000000 - 180000) freq = 100;
+else if(timer2->remainingTime()>= 1000000 - 120000) freq = 120;
+else if(timer2->remainingTime()>= 1000000 - 180000) freq = 80;
 else freq = 50;
 
 if(rand()%freq==0)

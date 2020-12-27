@@ -20,6 +20,7 @@ SOURCES += \
     Garlic.cpp \
     Grassland.cpp \
     NormalZombie.cpp \
+    PauseButton.cpp \
     PeaBullet.cpp \
     PeaShooter.cpp \
     Plants.cpp \
@@ -50,6 +51,7 @@ HEADERS += \
     Garlic.h \
     Grassland.h \
     NormalZombie.h \
+    PauseButton.h \
     PeaBullet.h \
     PeaShooter.h \
     Plants.h \

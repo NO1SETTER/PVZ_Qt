@@ -46,18 +46,18 @@ void PoleVaultingZombie::advance(int phase)
         {
             if(status!=STAT_JUMP1)
             {
-                status=STAT_JUMP1;
                 QString jumpPath1="images/Zombies/PoleVaultingZombie/PoleVaultingZombieJump.gif";
                 setGif(jumpPath1);
+                status=STAT_JUMP1;
                 if(isTallNut) speed = 0;
                 else speed = 9;
+
             }
             else
             {
                 jumpCounter = jumpCounter + 1;
                 x = x - speed;
             }
-
         }
         else if(jumpCounter<jumpTime2)
         {
@@ -103,11 +103,11 @@ void PoleVaultingZombie::advance(int phase)
         if(Pole)//有碰撞有杆,启动跳跃状态,利用计时器jumpcounter控制跳跃动作的播放
         {
             jumpCounter = 0;//启动计时器的意思
+            setGif("images/Zombies/PoleVaultingZombie/PoleVaultingZombieJump.gif");//提前设置一下避免变形
             Pole = 0;
             if(frontplt->name=="tallnut") isTallNut=1;
             return;
         }
-
         if(status!=STAT_BITE&&!HasPole())//有碰撞但是没杆,开始咬
         {
             status=STAT_BITE;
