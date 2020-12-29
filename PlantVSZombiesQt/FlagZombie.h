@@ -10,6 +10,7 @@ public:
     {
 
     }
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)override;
 };
 #endif // FLAGZOMBIE_H
 

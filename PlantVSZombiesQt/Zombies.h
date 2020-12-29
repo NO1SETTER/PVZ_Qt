@@ -14,11 +14,15 @@ protected:
 	//也即[像素点区间]--->某一个y
 	const int bonus;//击杀奖励
     QMovie* zombieGif;
-
+    QMovie* headGif;
+    QMovie* deadBodyGif;
+    QMovie* bombGif;
     bool isVerticalWalking;
     int targetRow;
     int targetY;
     int verticalSpeed;//同时包含了方向
+
+    int deadCounter;
 public:
     zombie();
     zombie(QString _name,int _row,int _x, int _y,int _health, int _attack, int _speed,int _bonus);
@@ -34,7 +38,7 @@ public:
     void advance(int phase) override;
 	virtual void bite(plant* plt);//hurt有可能更新地图
 	virtual void hurt(int damage);
-	virtual void dead();
+    virtual void dead(int _status);//说明是怎么死的
 	void decelerate(int val, int mode);
 
     int getRow() {return row;}

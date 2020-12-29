@@ -10,8 +10,12 @@ zombie::zombie():
 	health = 0;
 	speed = 0;
     zombieGif = NULL;
+    headGif = NULL;
+    deadBodyGif = NULL;
+    bombGif = NULL;
 	status = STAT_MOV;
     isVerticalWalking = 0;
+    deadCounter = 0;
 }
 
 zombie::zombie(QString _name,int _row, int _x, int _y,int _health, int _attack, int _speed,int _bonus):
@@ -23,8 +27,17 @@ zombie::zombie(QString _name,int _row, int _x, int _y,int _health, int _attack, 
 	speed = _speed;
 	status = STAT_MOV;
     zombieGif = NULL;
+    deadCounter = 0;
     QString zombiePath="images/Zombies/"+_name+"/"+_name+".gif";
     setGif(zombiePath);
+    if(name == "polevaultingzombie") headGif = new QMovie("images/Zombies/PoleVaultingZombie/PoleVaultingZombieHead.gif");
+    else headGif = new QMovie("images/Zombies/NormalZombie/NormalZombieHead.gif");
+
+    if(name == "polevaultingzombie") deadBodyGif = new QMovie("images/Zombies/PoleVaultingZombie/PoleVaultingZombieDie.gif");
+    else if(name== "flagzombie") deadBodyGif = new QMovie("images/Zombies/FlagZombie/FlagZombieLostHead.gif");
+    else deadBodyGif = new QMovie("images/Zombies/NormalZombie/NormalZombieLostHead.gif");
+
+    bombGif = new QMovie("images/Zombies/BoomDie.gif");
     isVerticalWalking = 0;
 }
 
@@ -38,7 +51,36 @@ void zombie::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
-    painter->drawPixmap(QRect(x,y,width,height),zombieGif->currentPixmap());
+    if(status == STAT_BOMB_DEAD)
+    {
+        if(deadCounter<15)
+        {
+            painter->drawPixmap(QRect(x-200,y-80,zombieBombWidth[zombieNameMap[name]],zombieBombHeight[zombieNameMap[name]]),bombGif->currentPixmap());
+            deadCounter = deadCounter + 1;
+        }
+        else
+        {
+            scene()->removeItem(this);
+            delete this;
+        }
+        return;
+    }
+    else if(status == STAT_HIT_DEAD)
+    {
+        if(deadCounter<15)
+        {
+            painter->drawPixmap(QRect(x-40,y-20,zombieHeadWidth[zombieNameMap[name]],zombieHeadHeight[zombieNameMap[name]]),headGif->currentPixmap());
+            painter->drawPixmap(QRect(x-40,y-20,zombieBodyWidth[zombieNameMap[name]],zombieBodyHeight[zombieNameMap[name]]),deadBodyGif->currentPixmap());
+            deadCounter = deadCounter + 1;
+        }
+        else
+        {
+            scene()->removeItem(this);
+            delete this;
+        }
+        return;
+    }
+    else painter->drawPixmap(QRect(x,y,width,height),zombieGif->currentPixmap());
 }
 
 bool zombie::collidesWithItem(const QGraphicsItem *other, Qt::ItemSelectionMode mode) const
@@ -104,10 +146,11 @@ void zombie::advance(int phase)
       }
    }
    QList<QGraphicsItem*> coItems=collidingItems();
-   if(coItems.isEmpty())
+   if(coItems.isEmpty()||status == STAT_HIT_DEAD||status == STAT_BOMB_DEAD)//死亡之后就不需要考虑碰撞了
    {
+      if(status == STAT_BOMB_DEAD) return;//炸死的原地不动
       x = x - speed;
-      if(status!=STAT_MOV)
+      if(status!=STAT_MOV&&status!=STAT_HIT_DEAD&&status!=STAT_BOMB_DEAD)
       {
           status=STAT_MOV;
           QString zombiePath="images/Zombies/"+name+"/"+name+".gif";
@@ -153,7 +196,6 @@ void zombie::bite(plant* plt)
         if(targetRow>row) verticalSpeed = 8;
         else verticalSpeed = -8;
         row = -1;//不可选中状态
-        cout<<"bite"<<endl;
     }
 }
 
@@ -163,15 +205,23 @@ void zombie::hurt(int damage)
 {
 	health = health - damage;
 	if (health <= 0)
-		dead();
+    {
+        if(damage == 80) dead(STAT_BOMB_DEAD);
+        else dead(STAT_HIT_DEAD);
+    }
 }
 
-void zombie::dead()
+void zombie::dead(int _status) //调整advance 让它不能修改dead状态
 {
     point = point + bonus;
-    scene()->removeItem(this);
-    delete this;
-    return;
+    status = _status;
+    if(status == STAT_BOMB_DEAD) bombGif->start();
+    else
+    {
+        headGif->start();
+        deadBodyGif->start();
+    }
+    zombieGif->stop();
 }
 
 void zombie::decelerate(int val, int mode)

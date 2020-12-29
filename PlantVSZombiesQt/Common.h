@@ -32,8 +32,10 @@ using namespace std;
 #define STAT_MOV  0//行进且无阻碍
 #define STAT_BITE 1//有植物,停下来吃
 #define STAT_WAIT 2//有僵尸,等待
-#define STAT_JUMP1 3
-#define STAT_JUMP2 4//属于撑杆跳僵尸的两个状态
+#define STAT_HIT_DEAD 3//子弹打死,还需要播放动画
+#define STAT_BOMB_DEAD 4//炸死,还需要播放动画
+#define STAT_JUMP1 5
+#define STAT_JUMP2 6//属于撑杆跳僵尸的两个状态
 
 #define STAT1 0
 #define STAT2 1
@@ -59,6 +61,13 @@ extern QString zombieName[5];
 extern const QMap<QString,int> zombieNameMap;
 extern int zombieAttackWidth[5];
 extern int zombieAttackHeight[5];
+
+extern int zombieHeadWidth[5];
+extern int zombieHeadHeight[5];
+extern int zombieBodyWidth[5];
+extern int zombieBodyHeight[5];
+extern int zombieBombWidth[5];
+extern int zombieBombHeight[5];
 //子弹的信息
 extern int bulletWidth[2];
 extern int bulletHeight[2];

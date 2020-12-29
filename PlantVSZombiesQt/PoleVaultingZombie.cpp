@@ -40,7 +40,7 @@ void PoleVaultingZombie::advance(int phase)
        }
     }
 
-    if(jumpCounter >= 0)//跳跃计时器启动,那么优先完成跳跃过程
+    if(jumpCounter >= 0 && status!=STAT_BOMB_DEAD && status!=STAT_HIT_DEAD)//跳跃计时器启动,那么优先完成跳跃过程
     {
         if(jumpCounter<jumpTime1)
         {
@@ -83,10 +83,11 @@ void PoleVaultingZombie::advance(int phase)
         return;
     }
     QList<QGraphicsItem*> coItems=collidingItems();
-    if(coItems.isEmpty()) //非跳跃状态的检查
+    if(coItems.isEmpty()||status==STAT_BOMB_DEAD||status==STAT_HIT_DEAD) //非跳跃状态的检查
     {
+       if(status == STAT_BOMB_DEAD) return;
        x = x - speed;
-       if(status!=STAT_MOV) //没有碰撞但是不是STAT_MOV状态,可能是跳前或跳后
+       if(status!=STAT_MOV&&status!=STAT_BOMB_DEAD&&status!=STAT_HIT_DEAD) //没有碰撞但是不是STAT_MOV状态,可能是跳前或跳后
        {
            status=STAT_MOV;
            QString zombiePath;
@@ -122,12 +123,44 @@ void PoleVaultingZombie::paint(QPainter *painter, const QStyleOptionGraphicsItem
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
-    if(status == STAT_MOV && Pole) painter->drawPixmap(QRect(x-40,y+15,zombieWidth[4],zombieWidth[4]),zombieGif->currentPixmap());
-    else if(status == STAT_MOV) painter->drawPixmap(QRect(x-80,y+15,PVZ_WALKING_WIDTH,PVZ_WALKING_HEIGHT),zombieGif->currentPixmap());
+    if(status == STAT_MOV && Pole) painter->drawPixmap(QRect(x-40,y+30,zombieWidth[4],zombieWidth[4]),zombieGif->currentPixmap());
+    else if(status == STAT_MOV) painter->drawPixmap(QRect(x-80,y+30,PVZ_WALKING_WIDTH,PVZ_WALKING_HEIGHT),zombieGif->currentPixmap());
     else if(status == STAT_JUMP1) painter->drawPixmap(QRect(x-60,y+15,PVZ_JUMP1_WIDTH,PVZ_JUMP1_HEIGHT),zombieGif->currentPixmap());
     else if(status == STAT_JUMP2) painter->drawPixmap(QRect(x-60,y+15,PVZ_JUMP2_WIDTH,PVZ_JUMP2_HEIGHT),zombieGif->currentPixmap());
-    else if(status == STAT_BITE)
-    painter->drawPixmap(QRect(x-80,y+15,zombieAttackWidth[4],zombieAttackHeight[4]),zombieGif->currentPixmap());
+    else if(status == STAT_BITE) painter->drawPixmap(QRect(x-80,y+15,zombieAttackWidth[4],zombieAttackHeight[4]),zombieGif->currentPixmap());
+    else if(status == STAT_BOMB_DEAD)
+    {
+        if(deadCounter<15)
+        {
+            if(HasPole())
+                painter->drawPixmap(QRect(x-140,y,zombieBombWidth[zombieNameMap[name]],zombieBombHeight[zombieNameMap[name]]),bombGif->currentPixmap());
+            else
+                painter->drawPixmap(QRect(x-120,y+10,zombieBombWidth[zombieNameMap[name]],zombieBombHeight[zombieNameMap[name]]),bombGif->currentPixmap());
+
+            deadCounter = deadCounter + 1;
+        }
+        else
+        {
+            scene()->removeItem(this);
+            delete this;
+        }
+        return;
+    }
+    else if(status == STAT_HIT_DEAD)
+    {
+        if(deadCounter<15)
+        {
+            painter->drawPixmap(QRect(x-80,y+15,zombieHeadWidth[zombieNameMap[name]],zombieHeadHeight[zombieNameMap[name]]),headGif->currentPixmap());
+            painter->drawPixmap(QRect(x-80,y+15,zombieBodyWidth[zombieNameMap[name]],zombieBodyHeight[zombieNameMap[name]]),deadBodyGif->currentPixmap());
+            deadCounter = deadCounter + 1;
+        }
+        else
+        {
+            scene()->removeItem(this);
+            delete this;
+        }
+        return;
+    }
 }
 
 int PoleVaultingZombie::jumpTime1 = 5;

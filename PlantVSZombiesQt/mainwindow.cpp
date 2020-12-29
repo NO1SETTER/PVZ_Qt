@@ -62,16 +62,17 @@ MainWindow::~MainWindow()
 void MainWindow::GenerateZombie()
 {
 int freq;
-if(timer2->remainingTime()>=1000000 - 30000) freq = 300;
-else if(timer2->remainingTime()>= 1000000 - 60000) freq = 200;
-else if(timer2->remainingTime()>= 1000000 - 120000) freq = 120;
-else if(timer2->remainingTime()>= 1000000 - 180000) freq = 80;
+if(timer2->remainingTime()>=10000000 - 30000) freq = 300;
+else if(timer2->remainingTime()>= 10000000 - 60000) freq = 200;
+else if(timer2->remainingTime()>= 10000000 - 120000) freq = 120;
+else if(timer2->remainingTime()>= 10000000 - 180000) freq = 80;
 else freq = 50;
 
 if(rand()%freq==0)
 {
     int row = rand()%5;
     int kind = rand()%5;
+    if(freq == 300 || freq == 200) kind = 0;//初始不要生成强僵尸
     zombie* newzombie;//=new PoleVaultingZombie(row,grassX[9],grassY[row]);
     switch(kind)
     {
@@ -89,7 +90,8 @@ if(rand()%freq==0)
 
 void MainWindow::GenerateSun()
 {
-    sun = sun + 25;
+    Sun* s= new Sun();
+    scene->addItem(s);
 }
 
 void MainWindow::CheckZombie()

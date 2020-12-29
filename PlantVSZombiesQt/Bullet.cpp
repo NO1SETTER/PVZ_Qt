@@ -44,6 +44,9 @@ bool bullet::collidesWithItem(const QGraphicsItem *other, Qt::ItemSelectionMode 
     int zrow = frontzb->getRow();
     QRectF rect1=this->boundingRect();
     QRectF rect2=other->boundingRect();
+
+    if(frontzb->status == STAT_HIT_DEAD || frontzb->status == STAT_BOMB_DEAD) return 0;//已经死亡但是仍然在播放动画的僵尸
+
     if(frontzb->name=="polevaultingzombie"&&qgraphicsitem_cast<PoleVaultingZombie*>(frontzb)->HasPole())
     {
          if(row == zrow &&rect1.left()+rect1.width()-110>=rect2.left() && rect1.left()-100<= rect2.left()) return 1;

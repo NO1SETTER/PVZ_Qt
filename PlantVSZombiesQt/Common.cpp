@@ -48,6 +48,13 @@ const QMap<QString,int> zombieNameMap={
 int zombieAttackWidth[5]={90,90,120,105,300};
 int zombieAttackHeight[5]={120,130,135,140,210};
 
+int zombieHeadWidth[5]={150,150,150,140,300};
+int zombieHeadHeight[5]={160,160,160,160,200};
+int zombieBodyWidth[5]={170,170,170,160,300};
+int zombieBodyHeight[5]={140,140,140,140,200};
+int zombieBombWidth[5]={370,370,370,370,370};
+int zombieBombHeight[5]={220,220,220,220,220};
+
 int bulletWidth[2]={40,40};
 int bulletHeight[2]={25,25};
 QString bulletName[2]={

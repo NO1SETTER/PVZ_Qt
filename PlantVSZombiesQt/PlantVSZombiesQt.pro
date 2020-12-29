@@ -31,6 +31,7 @@ SOURCES += \
     SnowPea.cpp \
     SnowPeaBullet.cpp \
     Squash.cpp \
+    Sun.cpp \
     SunFlower.cpp \
     SunPanel.cpp \
     TallNut.cpp \
@@ -62,6 +63,7 @@ HEADERS += \
     SnowPea.h \
     SnowPeaBullet.h \
     Squash.h \
+    Sun.h \
     SunFLower.h \
     SunPanel.h \
     TallNut.h \

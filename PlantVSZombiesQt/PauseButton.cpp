@@ -27,14 +27,14 @@ void PauseButton::mousePressEvent(QGraphicsSceneMouseEvent *event)
     {
         PauseState = 0;
         timer1->start();
-        timer2->start();
+        //timer2->start();
         timer3->start();
     }
     else
     {
         PauseState = 1;
         timer1->stop();
-        timer2->stop();
+        //timer2->stop();
         timer3->stop();
     }
 }

@@ -36,7 +36,7 @@ void Squash::advance(int phase)
         else
         {
             for(auto it=WipeOutList.begin();it!=WipeOutList.end();it++)
-                qgraphicsitem_cast<zombie*>(*it)->hurt(80);
+                qgraphicsitem_cast<zombie*>(*it)->hurt(90);
             this->dead();
         }//完成进攻动作,植物消失
     }
